@@ -17,6 +17,7 @@ const getAllProducts = async (req, res) => {
   if (company) {
     queryObject.company = company
   }
+
   if (name) {
     queryObject.name = { $regex: name, $options: 'i' }
   }
@@ -51,6 +52,11 @@ const getAllProducts = async (req, res) => {
     result = result.sort('createdAt')
   }
 
+  // include a and b, exclude other fields
+  // query.select('a b')
+  // exclude c and d, include other fields
+  // query.select('-c -d')
+
   if (fields) {
     const fieldsList = fields.split(',').join(' ')
     result = result.select(fieldsList)
@@ -60,6 +66,7 @@ const getAllProducts = async (req, res) => {
   const skip = (page - 1) * limit
 
   result = result.skip(skip).limit(limit)
+
   // 23
   // 4 7 7 7 2
 
